@@ -9,7 +9,7 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from uploader.models import Image
 
 class UserManager(BaseUserManager):
     """Manager for users."""
@@ -40,12 +40,12 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """User model in the system."""
 
-    passage_id = models.CharField(
-        max_length=255,
-        unique=True,
-        verbose_name=_("passage_id"),
-        help_text=_("Passage ID")
-    )
+    # passage_id = models.CharField(
+    #     max_length=255,
+    #     unique=True,
+    #     verbose_name=_("passage_id"),
+    #     help_text=_("Passage ID")
+    # )
     email = models.EmailField(
         max_length=255,
         unique=True,
@@ -68,6 +68,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=False,
         verbose_name=_("Usuário é da equipe"),
         help_text=_("Indica que este usuário pode acessar o Admin.")
+    )
+    foto = models.ForeignKey(
+        Image,
+        related_name="+",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        default=None,
     )
 
     objects = UserManager()
